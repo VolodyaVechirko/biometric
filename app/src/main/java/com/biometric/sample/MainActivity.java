@@ -1,4 +1,4 @@
-package com.an.biometric.sample;
+package com.biometric.sample;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.an.biometric.BiometricCallback;
 import com.an.biometric.BiometricManager;
+import com.biometric.sample.R;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;

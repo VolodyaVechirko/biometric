@@ -1,4 +1,4 @@
-package com.an.biometric.sample;
+package com.biometric.sample;
 
 import org.junit.Test;
 
