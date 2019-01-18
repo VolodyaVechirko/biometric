@@ -20,9 +20,11 @@ public class EncryptActivity extends AppCompatActivity {
     private Button decrypt;
     private TextView status;
 
-    private EncryptionServices encryptionServices;
+//    private EncryptionServices encryptionServices;
     private SharedPreferences prefs;
 
+    private RsaSignature rsaSignature;
+    private RsaEncryption rsaEncryption;
 //    private AesEncryption aesEncryption;
 
     @Override
@@ -39,8 +41,11 @@ public class EncryptActivity extends AppCompatActivity {
         status = findViewById(R.id.status);
 
         try {
-            encryptionServices = new EncryptionServices(this);
+//            encryptionServices = new EncryptionServices(this);
+            rsaSignature = new RsaSignature(this);
+            rsaEncryption = new RsaEncryption(this);
 //            aesEncryption = new AesEncryption(this);
+            rsaSignature.printPublicKey();
         } catch (Throwable e) {
             e.printStackTrace();
             status.setText("Error \n" + e.getMessage());
@@ -51,10 +56,14 @@ public class EncryptActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     String data = editText.getText().toString();
-                    String encrypted = encryptionServices.encrypt(data);
+                    String encrypted = rsaEncryption.encrypt(data);
+//                    String encrypted = encryptionServices.encrypt(data);
 //                    String encrypted = aesEncryption.encrypt(data);
 
+                    String sign = rsaSignature.sign(encrypted);
                     prefs.edit().putString("pass", encrypted).apply();
+                    prefs.edit().putString("sign", sign).apply();
+
                     status.setText("Encrypted \n" + encrypted);
                 } catch (Throwable e) {
                     e.printStackTrace();
@@ -68,8 +77,12 @@ public class EncryptActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     String encrypted = prefs.getString("pass", null);
-                    String data = encryptionServices.decrypt(encrypted);
+                    String data = rsaEncryption.decrypt(encrypted);
+//                    String data = encryptionServices.decrypt(encrypted);
 //                    String data = aesEncryption.decrypt();
+
+                    String signature = prefs.getString("sign", null);
+                    boolean verify = rsaSignature.verify(encrypted, signature);
 
                     textView.setText(data);
                     status.setText("Decryptes \n" + data);
