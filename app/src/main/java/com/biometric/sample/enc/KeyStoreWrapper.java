@@ -57,6 +57,10 @@ public class KeyStoreWrapper {
         }
     }
 
+    public boolean hasEncryptionKey(String alias) throws Throwable {
+        return keyStore.containsAlias(alias);
+    }
+
     @TargetApi(Build.VERSION_CODES.M)
     public SecretKey createAndroidKeyStoreSymmetricKey(String alias) throws Throwable {
         KeyGenerator keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, KEYSTORE_PROVIDER);

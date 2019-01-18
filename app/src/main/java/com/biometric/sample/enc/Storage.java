@@ -21,4 +21,8 @@ public class Storage {
     public String getEncryptionKey() {
         return secrets.getString(ENCRYPTION_KEY, "");
     }
+
+    public boolean hasEncryptionKey() {
+        return secrets.contains(ENCRYPTION_KEY);
+    }
 }

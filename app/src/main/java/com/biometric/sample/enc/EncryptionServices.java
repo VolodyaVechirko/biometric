@@ -28,7 +28,6 @@ public class EncryptionServices {
     public EncryptionServices(Context context) throws Throwable {
         storage = new Storage(context);
         keyStoreWrapper = new KeyStoreWrapper(context);
-        createMasterKey();
     }
 
     /*
@@ -41,11 +40,19 @@ public class EncryptionServices {
         else { /* Not supported */ }
     }
 
+    public boolean hasEncryptionKey() throws Throwable {
+        if (hasApi23()) return keyStoreWrapper.hasEncryptionKey(MASTER_KEY);
+        else if (hasApi18()) return storage.hasEncryptionKey();
+        else return false; // Not supported
+    }
+
     public void removeMasterKey() throws Throwable {
         keyStoreWrapper.removeAndroidKeyStoreKey(MASTER_KEY);
     }
 
     public String encrypt(String data) throws Throwable {
+        createMasterKey();
+
         if (hasApi23()) return encryptWithAndroidSymmetricKey(data);
         else if (hasApi18()) return encryptWithDefaultSymmetricKey(data);
         else return data; // Not supported

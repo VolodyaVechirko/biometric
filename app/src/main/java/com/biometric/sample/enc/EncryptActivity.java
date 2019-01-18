@@ -23,6 +23,8 @@ public class EncryptActivity extends AppCompatActivity {
     private EncryptionServices encryptionServices;
     private SharedPreferences prefs;
 
+//    private AesEncryption aesEncryption;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +40,7 @@ public class EncryptActivity extends AppCompatActivity {
 
         try {
             encryptionServices = new EncryptionServices(this);
+//            aesEncryption = new AesEncryption(this);
         } catch (Throwable e) {
             e.printStackTrace();
             status.setText("Error \n" + e.getMessage());
@@ -49,6 +52,7 @@ public class EncryptActivity extends AppCompatActivity {
                 try {
                     String data = editText.getText().toString();
                     String encrypted = encryptionServices.encrypt(data);
+//                    String encrypted = aesEncryption.encrypt(data);
 
                     prefs.edit().putString("pass", encrypted).apply();
                     status.setText("Encrypted \n" + encrypted);
@@ -65,6 +69,7 @@ public class EncryptActivity extends AppCompatActivity {
                 try {
                     String encrypted = prefs.getString("pass", null);
                     String data = encryptionServices.decrypt(encrypted);
+//                    String data = aesEncryption.decrypt();
 
                     textView.setText(data);
                     status.setText("Decryptes \n" + data);
